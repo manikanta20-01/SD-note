@@ -1,105 +1,21 @@
 # System Design Overview
+# syllabus:
+1. [Networking](#networking-modules)
 
-## System Requirements:
-
-### Ask clarifying questions to understand the problem and expectations of the Client.
-
-1. **Requirement Classifications**:
-   - Use cases
-   - Scenarios that will not be covered
-   - Who will use
-   - How many will use
-   - Usage patterns
-   - Technology stack
-
-### Functional Requirements:
-
-- Start with the customer and work base
-- Who will use the system
-- How will the system be used
-- Platform based (mobile, web, desktop)
-
-### Non-Functional Requirements:
-
-- **High availability system uptime** in percentage:
-  - 99% => 3.65 days of downtime per year
-  - 99.9% => 8.76 hours of downtime per year
-  - 99.99% => 52 minutes 35 seconds of downtime per year
-  - 99.999% => 5 minutes 15 seconds of downtime per year
-  - 99.9999% => 31 seconds of downtime per year
-- **Scalability** to handle peak load times
-- **Performance** in terms of latency and throughput
-- **Durability** – data should not be lost
-- **Consistency** – data should not be corrupted
-  - Strong consistency
-  - Weak consistency
-- **Maintainability**
-- **Failure modes and mitigations**
-- **Monitoring**
-- **Testing**
-- **Deployment**
-- **Security**
-- **Cost**
-
-## System Design Syllabus:
-
-### 1. Foundational Concepts
-
-- **Client-Server Model**: Basics of how clients and servers communicate. Request/response patterns (REST, RPC, WebSockets).
-- **Networking Basics**: TCP/IP, UDP, HTTP/HTTPS, DNS, CDN, Load Balancers, HTTP/2, HTTP/3.
-- **Databases**:
-  - RDBMS (MySQL, PostgreSQL).
-  - NoSQL: Key-Value stores (Redis, DynamoDB), Document stores (MongoDB, Couchbase), Wide-column stores (Cassandra), Graph DBs.
-  - ACID vs BASE properties.
-  - CAP Theorem: Consistency, Availability, Partition tolerance.
-- **Caching**: Client-side, CDN caching, Web server caching, Database caching.
-  - Cache strategies: Cache aside, Write-through, Write-behind.
-  - Eviction policies: LRU, LFU, FIFO.
-- **Message Queuing & Asynchronous Processing**: Message Brokers (Kafka, RabbitMQ, SQS). Event-driven architecture. Asynchronous messaging patterns.
-- **Latency and Throughput**: Definitions, measurement, and impact on design. Strategies for balancing latency and throughput.
-
-### 2. Core System Design Patterns
-
-- **Scalability**: Horizontal vs Vertical scaling, Load balancing (Active-Active, Active-Passive), Auto-scaling, Elasticity.
-- **Consistency**: Strong, Eventual, Weak consistency, Distributed transactions, two-phase commit.
-- **Availability**: High availability design, Failover strategies, Replication and partitioning.
-- **Partitioning & Sharding**: Horizontal vs Vertical data partitioning, Database sharding (range-based, hash-based, composite), Federation.
-
-### 3. Architecture Design
-
-- **Monolithic vs Microservices**: Benefits and challenges, Transitioning to microservices, Service discovery, API gateways.
-- **Service-Oriented Architectures (SOA)**: Core principles, Request-response, Publish-subscribe.
-- **High-Level Design Diagrams**: Architecture diagrams, Documenting design (UML, ERD, Flow diagrams).
-- **API Design**: RESTful API, GraphQL vs REST, Rate limiting, Pagination, Versioning.
-- **Data Flow Design**: Data flow diagrams, Workflow for read/write-heavy systems.
-
-### 4. Infrastructure & DevOps
-
-- **Cloud Architecture**: IaaS, PaaS, AWS, Google Cloud, Azure, Serverless architecture (Lambda, Azure Functions).
-- **CI/CD**: CI/CD pipelines, Automated testing, Rollback mechanisms.
-- **Infrastructure as Code (IaC)**: Tools like Terraform, CloudFormation.
-- **Monitoring & Logging**: Tools (Prometheus, Grafana, New Relic), ELK Stack (Elasticsearch, Logstash, Kibana), Alerts and response systems.
-- **Disaster Recovery & Backups**: Backup strategies, Multi-region disaster recovery.
-
-### 5. Advanced Topics
-
-- **Designing for High Traffic Systems**: Traffic estimates (QPS, read/write ratios), Peak load management, Performance testing.
-- **Distributed Systems**: Consensus algorithms (Paxos, Raft), Leader election, Replication, Fault tolerance, Distributed file systems (Google File System, HDFS).
-- **Event-Driven Architecture**: CQRS, Event sourcing, Eventual consistency.
-- **Security in System Design**: Authentication/Authorization (OAuth, JWT, SAML), Data encryption (In-transit, At-rest), Mitigating attacks (DDoS, SQL Injection, XSS).
 
 ---
 
-## Network Basics:
+## Networking Modules
+- [OSI model](#osi-models)
+- [Different Layers of Computer Network](#different-layers-of-computer-network)
+- [CDN](#content-delivery-network)
+- [Internal Routing](#internal-routing-mac-addresses-and-nat)
+- [Communication between Router to Server](#communication-between-router-to-server)
+- [Communication Standards](#communication-standards-rest-graphql-and-gprc)
+- [Protocols for video transmission](#protocols-for-video-transmission)
 
-1. **TCP and UDP**:
-   - **TCP**: Reliable, connection-oriented, ordered data transmission.
-   - **UDP**: Fast, connectionless, unordered data transmission.
 
-![alt text](img/TcpUdp.png)
-![alt text](img/table-tcp-udp.png)
-
-## OSI Models:
+### OSI Models:
 
 ![alt text](img/osiModel.png)
 
@@ -144,11 +60,172 @@ It is a framework that explains the process of transmitting data between compute
 
 ##### Connecting to the internet: ISPs, DNS and everything in between
 
-- So what happens when we enter a URL (let's say https://flipkart.com ) in our browser
+- So what happens when we enter a URL (let's say https://amazon.com ) in our browser
 
 - First, the computer sends the **NIC(Network Interface Card)**. This hardware component allows the computer to connect the internet.
 - The NIC allows the computer to connect the router.
-- The Router does not know where the https://flipkart.com is, so ask the central authority. This central authority maps addresses to their IP Address. This central authority has a set of servers that help to find the IP Address (which is known as Internet Backbone). This is also known as **Domain Name Server**.
-- A **Domain Name Server** handles the mapping of a business domain name to an IP Address. But how does this central authority know where https://flipkart.com is? The configuration is done by InterviewReady on the servers.
+- The Router does not know where the https://amazon.com is, so ask the central authority. This central authority maps addresses to their IP Address. This central authority has a set of servers that help to find the IP Address (which is known as Internet Backbone). This is also known as **Domain Name Server**.
+- A **Domain Name Server** handles the mapping of a business domain name to an IP Address. But how does this central authority know where https://amazon.com is? The configuration is done by Filpkart on the servers.
 
 ![alt text](img/networking.png)
+
+- After the router gets the IP Address, it connects to the amazon Server through Network Protocol. To put it simply we go from router to router and every router. At every router, we get the
+  address of the next router, which finally gets us to the amazon Server.
+
+- Our router will also get a response similarly.
+
+##### Few points on Network Security?
+
+1. Our router gets the IP Address from the DNS, so why can't someone intercept the message and send a fake IP Address?
+
+- It is only possible if someone gets physical access to the router and configures it so that it connects to his/her DNS.
+
+2. While sending requests and receiving responses, can a router in between redirect it to different servers or send malicious data?
+
+- It is only possible if you can convince the Internet Backbone that your router is genuine.
+
+### Content Delivery Network
+
+- To reduce the response time, servers usually cache the response for a request, so when the same request comes in it can send the response from the cache. However, this is also wasteful. Ideally, clients should store the data on their local computers. But the issue with this approach is that the data can become outdated.
+- To overcome these issues, we use **CDN**.
+
+- In simple terms **CDN** is a set of cache distributed across the globe. So instead of sending requests to the main server, clients can send to the nearest **CDN**.
+
+  - It saves bandwidth because CDNs are located near the client.
+  - It also faster.
+  - If the main server wants to update the data, it can send the request to the CDN.
+
+### Internal routing: MAC addresses and NAT
+
+- Once the router gets the response, it also needs to decode it. There can be multiple users can be connected with same router, so it must be send to the right user.
+
+##### There are two main methods to implements this:
+
+- **The Router has a mapping of the sender request and the domain requested.**
+
+  - We can have a mapping of the request ID and the MAC address of the device. Once the router gets the response it can send the response to the correct device.
+
+  - However, there is a security issue with this approach. If someone gets access to the router. Then they can change the MAC Address and redirect the response to their device.
+
+- **The Router sends the sender address when sending the request**
+
+  - We use Network Address Translation. The main idea behind this approach is, that every device has a unique identifier **inside its network**. Generally, Virtual IP Addresses are used as they are unique in their network and we do not need to depend on the physical address of the device. Now we send this virtual IP Address along with the message. Since this Virtual IP Address is unique in its network only, anyone else outside of the network cannot connect with the devices. This is known as Network Address Translation.
+
+### Communication between Router to Server
+
+#### HTTP
+
+- The common way to send requests and recieve responses through **HTTP**. HTTP stands for **Hyper Text Transmission Protocol**.
+
+1. It is **stateless**. It means every HTTP request the server receives is independent and does not relate to requests that came before it.
+2. It is a **Client-Server** protocol. There is a clear definition of the server and the client. Every client request will have an ID to which the server responds. In this protocol, the server cannot send a request to the client.
+
+#### WebSockets
+
+- So HTTP only allows unidirectional communication. If we want bi-directional communication we can
+  use **WebSockets**.
+- It allows for **Peer-to-Peer** communication. So it establishes a duplex connection allowing both devices to send and receive requests.
+
+- You can also use **XMPP** (Extensible Messaging and Presence Protocol) which is an open XML Technology for real-time communication.
+
+#### TCP and UPD
+
+- Both Http and websockets use **TCP**. It stands for **T**ransmission **C**ontrol **P**rotocol.
+- TCP provides features like
+
+  1. It ensures **Guaranteed Delivery**. Whenever the receiver gets our message. we get an acknowledgment. This makes sure our message delivers.
+  2. It ensures **the ordering of messages**. Since we wait for the acknowledgment, before sending the next message, it maintains the ordering of messages.
+  3. It also **retries**, when there is a failure. To process the message only once, the receiver can keep a track of the message ID. If the message ID is already processed, it can send the acknowledgment that it received the message but won't process it.
+
+- We also have another protocol known as **UDP**. It stands for User Datagram Protocol. Unlike TCP it does not have the above three features. It is mainly used in Real-Time Delivery.
+
+### Communication Standards: REST, GraphQL and GPRC
+
+- In a microservice architecture, services needs to communicate with each other. They send data in the form of an objects. Different Services can use different languages, so they must be common intermediate language for defining objects. Once the language is defined we need to query the data. There are two common techniques:
+  ![alt text](img/microservices.png)
+
+#### Rest
+
+- It is a **very common protocol and is used over the HTTP**.
+- It is a **stateless** because rather than relying on the server to remember the previous requests, REST applications require each request to contain all of the information necessary for the server to understand it.
+- Requests are **Cacheable**.
+
+#### GRAPHQL
+
+- In GraphQL we can request the specific attributes. So it saves bandwidth and also provides
+  security.
+
+#### gRPC
+
+- (google Remote Procedure Call) is generally used by microservices to communicate internally.
+  It is written over **HTTP 2.0**.
+
+### Head-of-Line Blocking in HTTP
+
+- Let's understand this using an example.
+- Suppose we have two devices A and B
+
+  - First A sends message to B.
+  - B fails to processing the message (or maybe it fails to send an acknowledgment).
+  - Since A did not get back any acknowledgment, A keeps retrying until B sends an acknowledgment.
+  - Other messages in A's queue are going to be waiting (because of ordered delivery).
+
+- So in simple terms, **Head-Of-Line blocking occurs when the message/data packet at the head of
+  the queue cannot move forward due to congestion even if other messages/packets behind this
+  one could.**
+
+- HTTP 2.0 solves this problem using **Multiplexing**. It implements multiplexing by **breaking the
+  messages/data packets into frames** and are sent in streams. Each stream has a stream ID. So,
+  when you get a message of a stream ID, that stream is going to be blocked until all the messages
+  having the stream IDs are processed.
+
+- HTTP 2.0 solved Head of Line Blocking, but it is still written over TCP. Even though data packets are broken into logical streams, they are not independent because they are running on the same TCP queue. If there was a drop-in packet in one of the streams, other streams will still be blocked.
+
+- Consider the example below, you have two streams with stream IDs 1 and 2. Even if one packet in
+  stream 2 was dropped, stream 1 is also blocked.
+
+![alt text](img/Http-2.0.png)
+
+- To solve this problem, HTTP 3.0 uses UDP instead of TCP. It used UPD because there are no acknowledgments. It provides streams, ordered delivery and all other features of HTTP 2.0. HTTP 3.0 will be called QUIC.
+
+### Protocols for video transmission
+
+- Video files are large and cannot be sent in a single response. They have to be broken into packets. Also, using HTTP to send video files is very inefficient.
+
+- HTTP is not good for video transmission because:
+
+  - Videos are broken into chunks. Since HTTP is stateless, the client has to specify which chunk it wants because the server does not know about the previous requests.
+
+  - HTTP is written over TCP which is not optimal for live streaming. Because in live streaming, if the video packet does not reach the client then there is no point in retrying because the data is old. So UDP is better for live-streaming. However, in some cases where we need, guaranteed delivery TCP is preferred.
+
+#### HTTP-DASH
+
+- DASH stands for Dynamic Adaptive Streaming over HTTP
+- This protocol runs over TCP. So there is guaranteed delivery and ordering.
+- The basic idea is, that the client sends a signal to the main server based on the data you can handle.
+- For example, if the client can handle a video up to 720p resolution then the main server will send the client a video up to 720p resolution. If the client's network is very slow then the main server will send videos in lower resolution to maintain connectivity.
+
+- In Mac devices, HLS is used. It is very similar to HTTP-DASH.
+
+#### Web-RTC
+- For video conferencing, sending video streams to the other client through a server is a bad idea because:
+
+  - It will increase the network congestion on the server-side.
+  - Video streaming will be slow.
+  - The server acts as a single point of failure.
+
+- So to solve these issues we use WebRTC.
+- It is a peer-to-peer protocol so no server is required to send data.
+
+##### How does peer-to-peer communication work?
+
+- First, the clients get the addresses of the other clients from the server.
+- Then the server sends the information to both the clients.
+- Clients use this information to connect.
+
+Since it does not require a server
+
+- It is fast.
+- It saves bandwidth.
+- It is more robust because even if the server crashes, clients can keep talking to each other.
+
